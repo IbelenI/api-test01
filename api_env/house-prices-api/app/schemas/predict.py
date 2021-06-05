@@ -1,0 +1,116 @@
+#Los "esquemas" indican la estructura que tendrán los diferentes "endpoints" de nuestra API.
+#Aquí tenemos el esquema que seguirán los resultados entregados por el modelo, 
+#es decir, la predicción, así como los datos de entrada.
+
+
+from typing import Any, List, Optional
+from pydantic import BaseModel
+#Dado que nuestra librería regression_model está incluida como dependencia, 
+#si queremos cargar alguna función de la misma la importaremos igual
+#que lo hacemos con cualquier otra librería de python. En este caso
+#importa el esquema de los datos de entrada que tiene la versión de la librería 
+#que tenemos aquí, que es un poco más avanzada de la que vimos en las sesiones.
+from regression_model.processing.validation import HouseDataInputSchema
+
+
+#Definimos esquemas para dos clases: los resultados de la prediccón tienen como
+#opcional darnos la medida del error de la predicción. Incluirá la versión del modelo
+#y la propia predicción.
+class PredictionResults(BaseModel):
+    errors: Optional[Any]
+    version: str
+    predictions: Optional[List[float]]
+
+#Definimos el esquema para los datos de entrada. Tenemos la posisbilidad de
+#poner datos de ejemplo. Fijáos:
+class MultipleHouseDataInputs(BaseModel):
+    inputs: List[HouseDataInputSchema]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "inputs": [
+                    {
+                        "MSSubClass": 20,
+                        "MSZoning": "RH",
+                        "LotFrontage": 80.0,
+                        "LotArea": 11622,
+                        "Street": "Pave",
+                        "Alley": None,
+                        "LotShape": "Reg",
+                        "LandContour": "Lvl",
+                        "Utilities": "AllPub",
+                        "LotConfig": "Inside",
+                        "LandSlope": "Gtl",
+                        "Neighborhood": "NAmes",
+                        "Condition1": "Feedr",
+                        "Condition2": "Norm",
+                        "BldgType": "1Fam",
+                        "HouseStyle": "1Story",
+                        "OverallQual": 5,
+                        "OverallCond": 6,
+                        "YearBuilt": 1961,
+                        "YearRemodAdd": 1961,
+                        "RoofStyle": "Gable",
+                        "RoofMatl": "CompShg",
+                        "Exterior1st": "VinylSd",
+                        "Exterior2nd": "VinylSd",
+                        "MasVnrType": "None",
+                        "MasVnrArea": 0.0,
+                        "ExterQual": "TA",
+                        "ExterCond": "TA",
+                        "Foundation": "CBlock",
+                        "BsmtQual": "TA",
+                        "BsmtCond": "TA",
+                        "BsmtExposure": "No",
+                        "BsmtFinType1": "Rec",
+                        "BsmtFinSF1": 468.0,
+                        "BsmtFinType2": "LwQ",
+                        "BsmtFinSF2": 144.0,
+                        "BsmtUnfSF": 270.0,
+                        "TotalBsmtSF": 882.0,
+                        "Heating": "GasA",
+                        "HeatingQC": "TA",
+                        "CentralAir": "Y",
+                        "Electrical": "SBrkr",
+                        "FirstFlrSF": 896,
+                        "SecondFlrSF": 0,
+                        "LowQualFinSF": 0,
+                        "GrLivArea": 896,
+                        "BsmtFullBath": 0.0,
+                        "BsmtHalfBath": 0.0,
+                        "FullBath": 1,
+                        "HalfBath": 0,
+                        "BedroomAbvGr": 2,
+                        "KitchenAbvGr": 1,
+                        "KitchenQual": "TA",
+                        "TotRmsAbvGrd": 5,
+                        "Functional": "Typ",
+                        "Fireplaces": 0,
+                        "FireplaceQu": None,
+                        "GarageType": "Attchd",
+                        "GarageYrBlt": 1961.0,
+                        "GarageFinish": "Unf",
+                        "GarageCars": 1.0,
+                        "GarageArea": 730.0,
+                        "GarageQual": "TA",
+                        "GarageCond": "TA",
+                        "PavedDrive": "Y",
+                        "WoodDeckSF": 140,
+                        "OpenPorchSF": 0,
+                        "EnclosedPorch": 0,
+                        "ThreeSsnPortch": 0,
+                        "ScreenPorch": 120,
+                        "PoolArea": 0,
+                        "PoolQC": None,
+                        "Fence": "MnPrv",
+                        "MiscFeature": None,
+                        "MiscVal": 0,
+                        "MoSold": 6,
+                        "YrSold": 2010,
+                        "SaleType": "WD",
+                        "SaleCondition": "Normal",
+                    }
+                ]
+            }
+        }
